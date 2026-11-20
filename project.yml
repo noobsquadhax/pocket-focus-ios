@@ -1,0 +1,33 @@
+name: PocketFocus
+options:
+  deploymentTarget:
+    iOS: "16.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+targets:
+  PocketFocus:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    info:
+      path: Generated/Info.plist
+      properties:
+        CFBundleDisplayName: Pocket Focus
+        UILaunchScreen: {}
+        NSCameraUsageDescription: Pocket Focus uses the rear camera and LiDAR to measure distance to your selected subject.
+        NSBluetoothAlwaysUsageDescription: Pocket Focus sends focus commands to your Blackmagic camera.
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.pocketfocus.personal
+        TARGETED_DEVICE_FAMILY: "1"
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        CODE_SIGN_STYLE: Automatic
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+schemes:
+  PocketFocus:
+    build:
+      targets:
+        PocketFocus: all

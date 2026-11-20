@@ -1,0 +1,40 @@
+name: Build Pocket Focus prototype
+
+on:
+  workflow_dispatch:
+    inputs:
+      capture_simulator:
+        description: Capture the native simulator startup screen
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Build and test
+        env:
+          CAPTURE_SIMULATOR: ${{ inputs.capture_simulator }}
+        run: |
+          xcodebuild -version
+          brew install xcodegen
+          xcodegen --version
+          if [[ "$CAPTURE_SIMULATOR" == "true" ]]; then
+            bash ./build-prototype.sh --simulator-evidence
+          else
+            bash ./build-prototype.sh
+          fi
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: ${{ !cancelled() }}
+        with:
+          name: PocketFocus-prototype
+          path: dist/
+          if-no-files-found: error
+          retention-days: 3
