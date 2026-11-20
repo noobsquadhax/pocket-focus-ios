@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 @main
 struct PocketFocusApp: App {
@@ -39,6 +40,8 @@ struct FocusScreen: View {
         .tint(accent)
         .onAppear { session.setActive(scenePhase == .active) }
         .onChange(of: scenePhase) { phase in session.setActive(phase == .active) }
+        .onChange(of: session.armed) { armed in UIApplication.shared.isIdleTimerDisabled = armed }
+        .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
         .sheet(isPresented: $showCamera) { cameraSheet }
         .sheet(isPresented: $showLens) { lensSheet }
     }
@@ -50,6 +53,7 @@ struct FocusScreen: View {
                 .accessibilityAddTraits(.isHeader)
             Spacer()
             Button {
+                session.disarm()
                 showCamera = true
             } label: {
                 Label(link.ready ? "Connected" : "Camera", systemImage: link.ready ? "link" : "link.badge.plus")
