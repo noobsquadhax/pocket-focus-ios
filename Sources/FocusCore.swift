@@ -26,8 +26,9 @@ struct LensProfile: Codable {
               first.meters > 0, last.command - first.command >= 0.025,
               marks.allSatisfy({ $0.meters.isFinite && (0...1).contains($0.command) })
         else { return false }
-        return zip(marks, marks.dropFirst()).allSatisfy {
-            $1.meters - $0.meters >= 0.05 && $1.command > $0.command
+        return zip(marks, marks.dropFirst()).allSatisfy { pair in
+            let (near, far) = pair
+            return far.meters - near.meters >= 0.05 && far.command > near.command
         }
     }
 
